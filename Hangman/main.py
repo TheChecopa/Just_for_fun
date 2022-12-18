@@ -4,13 +4,13 @@ import random
 alf = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
         'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',] #List of letters
 
-
+random_word = list('palabra')
 def open_txt(): #This function read the file and select a random word from txt
-    with open("./Hangman/list.txt", "r") as words_list:
+    with open("/Users/thechecopamac/Documents/Codes/Python/Just_for_fun/Hangman/words.txt", "r") as words_list:
         word = words_list.read()
         data = word.split()
-        random_word = random.choice(data)
-        #random_word = 'palabra'
+        #random_word = random.choice(data)
+        random_word = 'palabra'
     return list(random_word)
 
 
@@ -20,8 +20,8 @@ def available_letters(letter_user): #This function print a list of letters that 
             alf.remove(i)
     print("Aviable letters: ", '|'.join(alf))
 
-    
-def search_letter(random_word, letter_user): #This function returns a boolean, when the word typed by the user is 
+   
+def search_letter(random_word, letter_user): #This function returns a boolean, when the word typed by the user is
     for i in range(len(random_word)):        #inside the random word it returns true, otherwise it returns false
         if random_word[i] == letter_user:
             return True
@@ -35,14 +35,24 @@ def draw_lines(random_word, index_letter): #This function print the lines of the
             lines = lines + letter
         else:
             lines = lines + ' _ '
-    print(lines)       
+    print(lines)      
 
+
+def resize_word():
+    word_list = open_txt()
+    word_list = word_list #list(dict.fromkeys(word_list))
+    word_list.sort()
+    letters =''.join(word_list)
+    return letters
+   
 
 def guess_word(random_word): #This function has the necesary conditions to print the hangman
     attempts = 7
     index_letter = []
     lista = []
-    while attempts > 0:
+    list_letter = []
+    nombrequesisealgo = ''
+    while attempts > 0 and nombrequesisealgo != resize_word():
         print('-'*40)
         draw_lines(random_word, index_letter)
         letter_user = input('Guess a letter: ')
@@ -52,17 +62,21 @@ def guess_word(random_word): #This function has the necesary conditions to print
             print('The letter is correct')
             available_letters(letter_user)
             index_letter.append(letter_user)
+            list_letter.append(letter_user)
+            list_letter.sort()
+            nombrequesisealgo =''.join(list_letter)
+            print(nombrequesisealgo)
+            print(resize_word())
         elif letter_user not in alf:
             print('The letter has been gussed, try with other')
             available_letters(letter_user)
-        elif lista == random_word:
-            print('jajajajaj')
+       
         else:
-            attempts -= 1   
+            attempts -= 1  
             print('The letter is incorrect,', attempts, 'remmmaning attempts')
-            available_letters(letter_user)       
-    if random_word == index_letter:
-        print('You won, the letter is correct')
+            available_letters(letter_user)
+    if resize_word() == nombrequesisealgo:
+        print('You won, the word is correct')
     else:
         print('Your attempts are over, you word was: ', ''.join(random_word))
 
