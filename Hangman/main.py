@@ -9,10 +9,9 @@ def open_txt(): #This function read the file and select a random word from txt
     with open("/Users/thechecopamac/Documents/Codes/Python/Just_for_fun/Hangman/words.txt", "r") as words_list:
         word = words_list.read()
         data = word.split()
-        #random_word = random.choice(data)
-        random_word = 'palabra'
+        random_word = random.choice(data)
     return list(random_word)
-
+    
 
 def available_letters(letter_user): #This function print a list of letters that have not been typed by the user
     for i in alf:
@@ -38,9 +37,9 @@ def draw_lines(random_word, index_letter): #This function print the lines of the
     print(lines)      
 
 
-def resize_word():
+def resize_word(): #This function is used to sort the word
     word_list = open_txt()
-    word_list = word_list #list(dict.fromkeys(word_list))
+    word_list = list(dict.fromkeys(word_list))
     word_list.sort()
     letters =''.join(word_list)
     return letters
